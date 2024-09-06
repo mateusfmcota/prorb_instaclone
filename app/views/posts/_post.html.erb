@@ -8,13 +8,17 @@
   </div>
   <div class="post-actions">
     <%= turbo_frame_tag "post-likes" do %>
-      <%= button_to "", post_likes_path(post), class: "post-actions-like" %>
+      <% if is_liked(post) %>
+        <%= button_to "", post_likes_path(post), class: "post-actions-unlike", method: :delete , :disabled => !current_user %>
+      <% else %>
+        <%= button_to "", post_likes_path(post), class: "post-actions-like", :disabled => !current_user %>
+      <% end %>
     <% end %>
     <div class="post-actions-comments" id="post-comments-count"><%= pluralize(post.comments.count, "comment") %></div>
   </div>
   <div class="post-comments">
     <div id="comment-form"><%= render partial: "comments/form", locals: { post: post } %></div>
-    <div id="post-comments-list">
+    <div id="post-comments-list-<%= post.id %>">
       <%= render partial: "comments/list", locals: { post: post } %>
     </div>
   </div>

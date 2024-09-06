@@ -2,5 +2,16 @@
   <div class="comment">
     <span class="comment-author"><%= comment.user.username %></span>
     <%= comment.body %>
+
+    <%= turbo_frame_tag "comment-likes" do %>
+      <% if is_comment_liked(comment)%>
+        <%= button_to "", post_comment_like_path(post, comment),
+                      class: "post-actions-unlike", method: :delete, :disabled => !current_user %>
+      <%else%>
+        <%= button_to "", post_comment_like_path(post, comment),
+                      class: "post-actions-like", :disabled => !current_user %>
+      <%end%>
+    <% end %>
+    <span>likes:</span> <% comment.likes.count() %>
   </div>
 <% end %>
